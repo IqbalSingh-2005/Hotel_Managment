@@ -120,12 +120,17 @@ npm run lint
    - Fill in your Firebase credentials in the `.env` file (get these from Firebase Console)
    - Enable Google Authentication in Firebase Console
 
-4. **Start development server**
+4. **Understand the APIs** (Optional)
+   - 📖 [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) - Complete API reference with examples
+   - 🗺️ [API_IMPLEMENTATION_MAP.md](./API_IMPLEMENTATION_MAP.md) - Visual map of all API locations
+   - 🚀 [API_QUICK_REFERENCE.md](./API_QUICK_REFERENCE.md) - Quick lookup guide
+
+5. **Start development server**
    ```bash
    npm run dev
    ```
 
-5. **Open browser**
+6. **Open browser**
    Navigate to `http://localhost:5173`
 
 ## 📁 Project Structure
@@ -140,12 +145,12 @@ src/
 │   ├── LoadingSkeletons.jsx
 │   └── ...
 ├── config/             # Configuration files
-│   └── firebase.js     # Firebase configuration
+│   └── firebase.js     # Firebase configuration & initialization
 ├── contexts/           # React Context providers
-│   ├── AuthContext.jsx # Authentication state management
+│   ├── AuthContext.jsx # Authentication API & state management
 │   └── NotificationContext.jsx
 ├── services/           # API and database services
-│   ├── firebase.service.js  # Firestore CRUD operations
+│   ├── firebase.service.js  # Firestore CRUD operations (API Layer)
 │   └── initData.js     # Sample data initialization
 ├── pages/              # Page components
 │   ├── Home.jsx
@@ -160,6 +165,8 @@ src/
 ├── main.jsx            # Entry point
 └── index.css           # Global styles
 ```
+
+**📖 API Documentation:** See [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) for detailed information about all API endpoints and their usage.
 
 ## 🎨 Design System
 
@@ -231,7 +238,7 @@ Optimized build settings in `vite.config.js`:
 - **rooms**: Available rooms with details
 - **reviews**: User reviews for rooms
 
-See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for complete database schema.
+See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for complete database schema and [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) for API endpoints to interact with these collections.
 
 ## 🔐 Security
 
