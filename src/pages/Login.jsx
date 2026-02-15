@@ -37,19 +37,19 @@ export const Login = () => {
 
   return (
     <Background>
-      <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 mt-16 sm:mt-0">
         <div className="w-full max-w-md animate-slideUp">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 cinzel-decorative-regular">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 cinzel-decorative-regular">
               Welcome Back
             </h1>
-            <p className="text-gray-300 lora-sans">Sign in to your account</p>
+            <p className="text-sm sm:text-base text-gray-300 lora-sans">Sign in to your account</p>
           </div>
 
           {/* Login Form Card */}
-          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
               {/* Email Field */}
               <div className="relative">
                 <label className="block text-white text-sm font-light mb-2 lora-sans">

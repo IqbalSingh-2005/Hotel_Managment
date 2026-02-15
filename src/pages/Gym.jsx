@@ -21,9 +21,9 @@ export const Gym = () => {
       <Gym_Background>
         <Navbar />
         
-        <h1 className="mt-60 md:mt-80 text-5xl text-white drop-shadow-md text-center leading-tight">
+        <h1 className="mt-48 sm:mt-56 md:mt-64 lg:mt-72 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white drop-shadow-md text-center leading-tight px-4">
           <div
-            className={`lora-sans text-4xl transition-all duration-700 ${
+            className={`lora-sans transition-all duration-700 ${
               animateText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             }`}
           >
@@ -31,7 +31,7 @@ export const Gym = () => {
           </div>
 
           <div
-            className={`text-6xl md:text-7xl cinzel-decorative-regular transition-all duration-700 delay-500 ${
+            className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl cinzel-decorative-regular transition-all duration-700 delay-500 ${
               animateText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
             }`}
           >
@@ -44,7 +44,7 @@ export const Gym = () => {
         </h1>
 
         <p
-          className={`text-base md:text-xl text-center font-extralight text-white max-w-2xl mx-auto mb-6 px-4 py-2 rounded-3xl transition-all duration-700 delay-700 ${
+          className={`text-sm sm:text-base md:text-lg lg:text-xl text-center font-extralight text-white max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto mb-6 px-4 py-2 rounded-3xl transition-all duration-700 delay-700 ${
             animateText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
           }`}
         >
@@ -55,7 +55,7 @@ export const Gym = () => {
         <div className="text-center mt-4">
           <Link
             to="/booking"
-            className={`mt-6 inline-block bg-white/10 border border-white text-white px-8 py-3 rounded-full text-lg tracking-wide
+            className={`mt-6 inline-block bg-white/10 border border-white text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-base sm:text-lg tracking-wide
               font-light uppercase transition-all duration-700 delay-1000 ease-in-out hover:bg-white hover:text-black
               hover:shadow-[0_12px_35px_rgba(0,0,0,1)] backdrop-opacity-40-md ${
                 animateText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"

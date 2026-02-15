@@ -36,42 +36,42 @@ export const UserProfile = () => {
 
   return (
     <Background>
-      <div className="min-h-screen px-4 md:px-8 py-12 mt-28 md:mt-20">
+      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-12 mt-24 sm:mt-28 md:mt-20">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 cinzel-decorative-regular">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 cinzel-decorative-regular">
               My Profile
             </h1>
-            <p className="text-gray-300 lora-sans">Manage your account information</p>
+            <p className="text-sm sm:text-base text-gray-300 lora-sans">Manage your account information</p>
           </div>
 
           {/* Profile Card */}
-          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
+          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl">
             {/* Profile Picture Section */}
-            <div className="flex flex-col items-center mb-8 pb-8 border-b border-white/20">
+            <div className="flex flex-col items-center mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-white/20">
               <div className="relative">
                 <img
                   src="/Others/image.png"
                   alt="Profile"
-                  className="w-32 h-32 rounded-full border-4 border-white/30 shadow-lg"
+                  className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white/30 shadow-lg object-cover"
                 />
-                <button className="absolute bottom-2 right-2 bg-white text-black p-2 rounded-full hover:bg-gray-200 transition-colors">
-                  <Edit2 className="w-4 h-4" />
+                <button className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 bg-white text-black p-1.5 sm:p-2 rounded-full hover:bg-gray-200 transition-colors">
+                  <Edit2 className="w-3 h-3 sm:w-4 sm:h-4" />
                 </button>
               </div>
-              <h2 className="text-2xl font-bold text-white mt-4">{profileData.fullName}</h2>
-              <p className="text-gray-400 text-sm">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mt-3 sm:mt-4 text-center">{profileData.fullName}</h2>
+              <p className="text-gray-400 text-xs sm:text-sm text-center">
                 Member since {new Date(profileData.memberSince).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
               </p>
             </div>
 
             {/* Profile Information */}
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               {/* Full Name */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                <label className="flex items-center text-white font-light">
-                  <User className="w-5 h-5 mr-2 text-gray-400" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 items-center">
+                <label className="flex items-center text-white font-light text-sm sm:text-base">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-gray-400 flex-shrink-0" />
                   Full Name
                 </label>
                 {isEditing ? (
