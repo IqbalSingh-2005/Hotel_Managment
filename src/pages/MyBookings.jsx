@@ -116,7 +116,7 @@ export const MyBookings = () => {
                       alt={booking.roomName}
                       className="w-full h-48 md:h-full object-cover rounded-xl"
                       onError={(e) => {
-                        e.target.src = '/Others/image.png';
+                        e.target.src = '/Others/room-placeholder.svg';
                       }}
                     />
                   </div>
