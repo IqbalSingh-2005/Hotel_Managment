@@ -20,7 +20,7 @@ export const Navbar = ({ dropIn }) => {
 
         <div className="w-full bg-white/10 backdrop-blur-xl border-b border-white/20 py-2 relative z-10">
           {/* Login Icon */}
-          <div className="absolute top-3 md:top-4 right-2 sm:right-6 md:right-8 flex flex-col items-center cursor-pointer group">
+          <Link to="/login" className="absolute top-3 md:top-4 right-2 sm:right-6 md:right-8 flex flex-col items-center cursor-pointer group">
             <CircleUserRound
               strokeWidth={1}
               className="text-white group-hover:text-gray-900 transition-colors duration-200 w-8 h-8 sm:w-20 sm:h-20 md:w-12 md:h-12"
@@ -28,7 +28,7 @@ export const Navbar = ({ dropIn }) => {
             <span className="text-white group-hover:text-gray-900 transition-colors duration-200">
               Login
             </span>
-          </div>
+          </Link>
 
           {/* Hamburger Icon */}
           <div className="absolute top-5 md:top-7 left-2 sm:left-6 md:left-8 flex flex-col items-center cursor-pointer group">
