@@ -14,7 +14,7 @@ const validateFirebaseConfig = () => {
   ];
 
   const missingVars = requiredEnvVars.filter(
-    varName => !import.meta.env[varName]
+    varName => import.meta.env[varName] === undefined || import.meta.env[varName] === ''
   );
 
   if (missingVars.length > 0) {
@@ -33,7 +33,7 @@ See FIREBASE_SETUP.md for detailed instructions.
     `.trim();
     
     console.error(errorMessage);
-    throw new Error('Firebase configuration is incomplete. Check console for details.');
+    throw new Error(`Firebase configuration is incomplete. Missing: ${missingVars.join(', ')}`);
   }
 };
 
