@@ -7,7 +7,7 @@ import {
   onAuthStateChanged,
   updateProfile
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, googleProvider, db } from "../config/firebase";
 
 const AuthContext = createContext();
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
         name,
         email,
         phone,
-        createdAt: new Date().toISOString(),
+        createdAt: serverTimestamp(),
         photoURL: null
       });
 
@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
           name: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
-          createdAt: new Date().toISOString(),
+          createdAt: serverTimestamp(),
           phone: ""
         });
       }

@@ -2,12 +2,16 @@
  * Sample data initialization script
  * This file contains sample data for the hotel management system
  * Run this once to populate your Firebase database with initial data
+ * 
+ * NOTE: The image paths below reference files in the public/Rooms directory.
+ * If these images don't exist, the application will fall back to room-placeholder.svg
  */
 
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
 // Sample room data
+// NOTE: These images should exist in public/Rooms/ or will fall back to placeholder
 export const sampleRooms = [
   {
     name: "Deluxe Suite",

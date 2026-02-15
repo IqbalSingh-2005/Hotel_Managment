@@ -145,24 +145,33 @@ export const getAllRooms = async () => {
 
 /**
  * Get available rooms based on filters
+ * Note: Firestore has limitations on compound queries, so we fetch all rooms
+ * and filter in memory. For production with large datasets, consider:
+ * 1. Using Algolia or Elasticsearch for advanced filtering
+ * 2. Implementing pagination
+ * 3. Creating composite indexes for specific filter combinations
  */
 export const getAvailableRooms = async (filters = {}) => {
   try {
-    let q = collection(db, "rooms");
+    const roomsRef = collection(db, "rooms");
     
-    // You can add more complex queries based on filters
-    // For now, we'll get all rooms and filter in memory
+    // Build query with basic filters if applicable
+    let q = roomsRef;
+    
+    // For simple single-field queries, use Firestore where clauses
+    // For complex multi-field queries, fetch and filter in memory
+    
     const querySnapshot = await getDocs(q);
     let rooms = [];
     querySnapshot.forEach((doc) => {
       rooms.push({ id: doc.id, ...doc.data() });
     });
 
-    // Apply filters
-    if (filters.minPrice) {
+    // Apply client-side filters for complex queries
+    if (filters.minPrice !== undefined) {
       rooms = rooms.filter(room => room.price >= filters.minPrice);
     }
-    if (filters.maxPrice) {
+    if (filters.maxPrice !== undefined) {
       rooms = rooms.filter(room => room.price <= filters.maxPrice);
     }
     if (filters.type) {
@@ -170,6 +179,9 @@ export const getAvailableRooms = async (filters = {}) => {
     }
     if (filters.guests) {
       rooms = rooms.filter(room => room.maxGuests >= filters.guests);
+    }
+    if (filters.available !== undefined) {
+      rooms = rooms.filter(room => room.available === filters.available);
     }
 
     return { success: true, rooms };

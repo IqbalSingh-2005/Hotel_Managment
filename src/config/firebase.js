@@ -2,14 +2,15 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-// Firebase configuration using the provided Google OAuth credentials
+// Firebase configuration
+// For production, use environment variables. For development, you can use the values below.
 const firebaseConfig = {
-  apiKey: "AIzaSyBOGxH5p9C8KqFJjZn3nYzHVL8K7qY1234", // This will be set up with a proper Firebase project
-  authDomain: "gen-lang-client-0114691969.firebaseapp.com",
-  projectId: "gen-lang-client-0114691969",
-  storageBucket: "gen-lang-client-0114691969.appspot.com",
-  messagingSenderId: "554284144835",
-  appId: "1:554284144835:web:abc123def456"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "YOUR_FIREBASE_API_KEY",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "gen-lang-client-0114691969.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "gen-lang-client-0114691969",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "gen-lang-client-0114691969.appspot.com",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "554284144835",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:554284144835:web:abc123def456"
 };
 
 // Initialize Firebase
