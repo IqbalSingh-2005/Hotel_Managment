@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Ham_Menu = ({ isOpen, onClose }) => {
   return (
@@ -40,21 +41,33 @@ export const Ham_Menu = ({ isOpen, onClose }) => {
 
         {/* Sidebar Links */}
         <div className="flex flex-col py-6 px-6 gap-4 md:gap-6 text-base sm:text-lg md:text-xl font-extralight">
-          {[
-            "Profile",
-            "Food orders",
-            "My Bookings",
-            "Payments",
-            "Booking History",
-            "Service Requests",
-            "Support",
-            "Change Password",
-            "Logout",
-          ].map((item) => (
-            <a href="#" key={item} className="hover:text-gray-300">
-              {item}
-            </a>
-          ))}
+          <Link to="/profile" className="hover:text-gray-300">
+            Profile
+          </Link>
+          <Link to="#" className="hover:text-gray-300">
+            Food orders
+          </Link>
+          <Link to="/my-bookings" className="hover:text-gray-300">
+            My Bookings
+          </Link>
+          <Link to="#" className="hover:text-gray-300">
+            Payments
+          </Link>
+          <Link to="#" className="hover:text-gray-300">
+            Booking History
+          </Link>
+          <Link to="#" className="hover:text-gray-300">
+            Service Requests
+          </Link>
+          <Link to="#" className="hover:text-gray-300">
+            Support
+          </Link>
+          <Link to="#" className="hover:text-gray-300">
+            Change Password
+          </Link>
+          <Link to="/login" className="hover:text-gray-300">
+            Logout
+          </Link>
         </div>
       </div>
     </>
