@@ -133,7 +133,7 @@ export const SearchRooms = () => {
 
   return (
     <Background>
-      <div className="min-h-screen px-4 md:px-8 py-12 mt-28 md:mt-20">
+      <div className="min-h-screen px-4 md:px-8 py-12 pt-32 sm:pt-36 md:pt-40 lg:pt-44">
         {/* Header */}
         <div className="max-w-7xl mx-auto mb-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 cinzel-decorative-regular">

@@ -28,7 +28,7 @@ export const ForgotPassword = () => {
   if (submitted) {
     return (
       <Background>
-        <div className="min-h-screen flex items-center justify-center px-4 py-12">
+        <div className="min-h-screen flex items-center justify-center px-4 py-12 pt-32 sm:pt-36 md:pt-40 lg:pt-44">
           <div className="w-full max-w-md animate-slideUp">
             {/* Success Message */}
             <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl text-center">
@@ -87,7 +87,7 @@ export const ForgotPassword = () => {
 
   return (
     <Background>
-      <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <div className="min-h-screen flex items-center justify-center px-4 py-12 pt-32 sm:pt-36 md:pt-40 lg:pt-44">
         <div className="w-full max-w-md animate-slideUp">
           {/* Header */}
           <div className="text-center mb-8">
