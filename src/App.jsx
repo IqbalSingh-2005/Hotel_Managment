@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SplashScreen } from "./components/SplashScreen/SplashScreen.jsx";
 import { Navbar } from "./components/Navbar.jsx";
 import { Chatbot } from "./components/Chatbot.jsx";
-import { NotificationSystem } from "./components/NotificationSystem.jsx";
+import { NotificationProvider } from "./contexts/NotificationContext.jsx";
 import { Home } from "./pages/Home";
 import { Rooms } from "./pages/Rooms";
 import { Restaurant } from "./pages/Restaurant";
@@ -38,33 +38,32 @@ function App() {
       {!splashDone && <SplashScreen onFinish={() => setSplashDone(true)} />}
 
       <div className={`${!splashDone ? 'pointer-events-none select-none overflow-hidden' : ''}`}>
-        {/* Router wraps everything that needs useLocation */}
-        <Router>
-          {/* ✅ Navbar is now inside Router */}
-          <Navbar dropIn={dropNavbar} />
+        <NotificationProvider>
+          {/* Router wraps everything that needs useLocation */}
+          <Router>
+            {/* ✅ Navbar is now inside Router */}
+            <Navbar dropIn={dropNavbar} />
 
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/rooms' element={<Rooms />} />
-            <Route path='/Restaurant' element={<Restaurant />} />
-            <Route path='/Gym' element={<Gym />} />
-            <Route path='/events' element={<Events />} />
-            <Route path='/contact' element={<Contact />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/forgot-password' element={<ForgotPassword />} />
-            <Route path='/booking' element={<SearchRooms />} />
-            <Route path='/profile' element={<UserProfile />} />
-            <Route path='/my-bookings' element={<MyBookings />} />
-            <Route path='/admin' element={<AdminDashboard />} />
-          </Routes>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/rooms' element={<Rooms />} />
+              <Route path='/Restaurant' element={<Restaurant />} />
+              <Route path='/Gym' element={<Gym />} />
+              <Route path='/events' element={<Events />} />
+              <Route path='/contact' element={<Contact />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<Signup />} />
+              <Route path='/forgot-password' element={<ForgotPassword />} />
+              <Route path='/booking' element={<SearchRooms />} />
+              <Route path='/profile' element={<UserProfile />} />
+              <Route path='/my-bookings' element={<MyBookings />} />
+              <Route path='/admin' element={<AdminDashboard />} />
+            </Routes>
 
-          {/* Notification System - Global notifications */}
-          {splashDone && <NotificationSystem />}
-
-          {/* Chatbot Component - Available on all pages */}
-          {splashDone && <Chatbot />}
-        </Router>
+            {/* Chatbot Component - Available on all pages */}
+            {splashDone && <Chatbot />}
+          </Router>
+        </NotificationProvider>
       </div>
     </>
   );

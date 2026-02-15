@@ -43,6 +43,7 @@ const topRooms = [
 export const AdminDashboard = () => {
   const [timeRange, setTimeRange] = useState("month");
 
+  // Icon is used in JSX below
   // eslint-disable-next-line no-unused-vars
   const StatCard = ({ icon: Icon, title, value, growth, prefix = "" }) => (
     <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-2xl hover:shadow-white/10 transition-all duration-300">
