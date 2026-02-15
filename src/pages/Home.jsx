@@ -18,7 +18,7 @@ export const Home = () => {
         // Fallback for older browsers
         navType = performance.navigation.type === 1 ? "reload" : "navigate";
       }
-    } catch (e) {
+    } catch {
       // Fallback in case performance API fails
       navType = "navigate";
     }

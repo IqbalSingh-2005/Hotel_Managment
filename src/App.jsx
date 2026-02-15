@@ -4,6 +4,8 @@ import './index.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SplashScreen } from "./components/SplashScreen/SplashScreen.jsx";
 import { Navbar } from "./components/Navbar.jsx";
+import { Chatbot } from "./components/Chatbot.jsx";
+import { NotificationSystem } from "./components/NotificationSystem.jsx";
 import { Home } from "./pages/Home";
 import { Rooms } from "./pages/Rooms";
 import { Restaurant } from "./pages/Restaurant";
@@ -56,6 +58,12 @@ function App() {
             <Route path='/my-bookings' element={<MyBookings />} />
             <Route path='/admin' element={<AdminDashboard />} />
           </Routes>
+
+          {/* Notification System - Global notifications */}
+          {splashDone && <NotificationSystem />}
+
+          {/* Chatbot Component - Available on all pages */}
+          {splashDone && <Chatbot />}
         </Router>
       </div>
     </>
