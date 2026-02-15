@@ -1,16 +1,17 @@
-# Hotel Management System - Frontend
+# Hotel Management System
 
-A premium, full-featured hotel management system frontend built with React, featuring advanced booking capabilities, user dashboards, admin analytics, and AI-powered customer support.
+A premium, full-featured hotel management system built with React and Firebase, featuring advanced booking capabilities, user dashboards, admin analytics, Google OAuth authentication, and AI-powered customer support.
 
 ## 🌟 Features
 
 ### Customer-Facing Features
 - **Authentication System**
-  - Login with email/password
-  - User registration with validation
-  - Password reset flow
-  - Social login UI (Google, Facebook)
-  - Session persistence
+  - ✅ Login with email/password (Firebase Auth)
+  - ✅ User registration with validation
+  - ✅ Password reset flow
+  - ✅ **Google OAuth Sign-In** (Fully Integrated)
+  - ✅ Session persistence
+  - ✅ Firebase Authentication integration
 
 - **Advanced Room Search & Booking**
   - Multi-criteria filtering (price, rating, amenities, guests)
@@ -63,11 +64,15 @@ A premium, full-featured hotel management system frontend built with React, feat
   - Loading skeletons
   - Responsive design (mobile-first)
   - Premium color scheme
+  - Professional default avatars and placeholders
 
 ## 🛠 Tech Stack
 
 - **Framework**: React 19.1.0
 - **Build Tool**: Vite 6.3.5
+- **Backend**: Firebase (Authentication + Firestore)
+- **Authentication**: Firebase Auth with Google OAuth 2.0
+- **Database**: Cloud Firestore
 - **Routing**: React Router DOM 7.6.3
 - **Styling**: Tailwind CSS 3.4.17
 - **Icons**: Lucide React 0.525.0
@@ -106,12 +111,17 @@ npm run lint
    npm install
    ```
 
-3. **Start development server**
+3. **Set up Firebase** (Important!)
+   - Follow the detailed instructions in [FIREBASE_SETUP.md](./FIREBASE_SETUP.md)
+   - Update `src/config/firebase.js` with your Firebase credentials
+   - Enable Google Authentication in Firebase Console
+
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-4. **Open browser**
+5. **Open browser**
    Navigate to `http://localhost:5173`
 
 ## 📁 Project Structure
@@ -125,8 +135,14 @@ src/
 │   ├── Chatbot.jsx
 │   ├── LoadingSkeletons.jsx
 │   └── ...
+├── config/             # Configuration files
+│   └── firebase.js     # Firebase configuration
 ├── contexts/           # React Context providers
+│   ├── AuthContext.jsx # Authentication state management
 │   └── NotificationContext.jsx
+├── services/           # API and database services
+│   ├── firebase.service.js  # Firestore CRUD operations
+│   └── initData.js     # Sample data initialization
 ├── pages/              # Page components
 │   ├── Home.jsx
 │   ├── Login.jsx
@@ -181,6 +197,14 @@ src/
 
 ## 🔧 Configuration
 
+### Firebase Configuration
+See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for detailed Firebase setup instructions including:
+- Creating a Firebase project
+- Enabling authentication methods
+- Setting up Firestore database
+- Configuring security rules
+- Google OAuth setup
+
 ### Tailwind Configuration
 Custom animations and utilities in `tailwind.config.js`:
 - Text gradient animation
@@ -194,38 +218,49 @@ Optimized build settings in `vite.config.js`:
 - Fast refresh
 - Build optimization
 
-## 🧪 Testing
+## 🗄️ Database
 
-The project uses mock data for demonstration:
-- Mock room data in SearchRooms.jsx
-- Mock booking data in MyBookings.jsx
-- Mock analytics in AdminDashboard.jsx
+### Firebase Firestore Collections
+
+- **users**: User profiles and settings
+- **bookings**: Hotel room reservations
+- **rooms**: Available rooms with details
+- **reviews**: User reviews for rooms
+
+See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for complete database schema.
 
 ## 🔐 Security
 
-- Input validation on all forms
-- XSS prevention through React's built-in escaping
-- No inline scripts
-- Secure authentication flow
+- ✅ Firebase Authentication with email/password and Google OAuth
+- ✅ Firestore security rules for data protection
+- ✅ Input validation on all forms
+- ✅ XSS prevention through React's built-in escaping
+- ✅ No inline scripts
+- ✅ Secure authentication flow
 - ✅ 0 security vulnerabilities (CodeQL scan)
 
-## 🎯 Future Enhancements
+## 🎯 Implemented Features
 
-### Backend Integration
-- Replace mock data with API calls
-- Implement real authentication (JWT)
-- WebSocket for real-time updates
-- Payment gateway integration
+### Authentication & Backend
+- ✅ Firebase Authentication (Email/Password)
+- ✅ Google OAuth 2.0 Sign-In
+- ✅ Cloud Firestore database
+- ✅ User profile management
+- ✅ Session persistence
+- ✅ Secure data storage
 
-### Advanced Features
+### Future Enhancements
+
+#### Advanced Features
+- Payment gateway integration (Stripe/PayPal)
 - Machine learning price prediction
 - Collaborative filtering recommendations
-- Fraud detection
 - Email notifications
 - SMS alerts
 - Calendar synchronization
+- WebSocket for real-time updates
 
-### Admin Features
+#### Admin Features
 - Hotel management (add/edit)
 - Room management interface
 - User management

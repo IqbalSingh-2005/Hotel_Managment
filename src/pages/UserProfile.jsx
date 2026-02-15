@@ -52,7 +52,7 @@ export const UserProfile = () => {
             <div className="flex flex-col items-center mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-white/20">
               <div className="relative">
                 <img
-                  src="/Others/image.png"
+                  src={user?.photoURL || "/Others/default-avatar.svg"}
                   alt="Profile"
                   className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white/30 shadow-lg object-cover"
                 />

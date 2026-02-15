@@ -314,7 +314,7 @@ export const SearchRooms = () => {
                   alt={room.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.target.src = '/Others/image.png';
+                    e.target.src = '/Others/room-placeholder.svg';
                   }}
                 />
                 <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full">

@@ -42,7 +42,7 @@ export const Ham_Menu = ({ isOpen, onClose }) => {
             /* Logged In: Show Avatar + Name */
             <div className="flex flex-col items-center gap-2 mt-2">
               <img
-                src="/Others/image.png"
+                src={user?.photoURL || "/Others/default-avatar.svg"}
                 alt="Profile"
                 className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-white/30 object-cover"
               />

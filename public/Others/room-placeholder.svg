@@ -1,0 +1,29 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="roomBg" x1="0" y1="0" x2="800" y2="600">
+      <stop offset="0%" style="stop-color:#4a5568;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d3748;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#roomBg)"/>
+  
+  <!-- Simple hotel room icon -->
+  <g transform="translate(400, 300)">
+    <!-- Bed frame -->
+    <rect x="-150" y="-40" width="300" height="80" rx="8" fill="#6b7280" opacity="0.6"/>
+    <!-- Bed headboard -->
+    <rect x="-160" y="-80" width="320" height="50" rx="8" fill="#6b7280" opacity="0.8"/>
+    <!-- Pillow 1 -->
+    <rect x="-120" y="-30" width="80" height="30" rx="4" fill="#9ca3af" opacity="0.9"/>
+    <!-- Pillow 2 -->
+    <rect x="40" y="-30" width="80" height="30" rx="4" fill="#9ca3af" opacity="0.9"/>
+    
+    <!-- Text -->
+    <text x="0" y="100" font-family="Arial, sans-serif" font-size="24" fill="#d1d5db" text-anchor="middle" opacity="0.6">
+      Room Image Not Available
+    </text>
+  </g>
+</svg>
