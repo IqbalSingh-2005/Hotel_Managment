@@ -14,6 +14,9 @@ import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { SearchRooms } from "./pages/SearchRooms";
+import { UserProfile } from "./pages/UserProfile";
+import { MyBookings } from "./pages/MyBookings";
+import { AdminDashboard } from "./pages/AdminDashboard";
 
 function App() {
   const [splashDone, setSplashDone] = useState(false);
@@ -49,6 +52,9 @@ function App() {
             <Route path='/signup' element={<Signup />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/booking' element={<SearchRooms />} />
+            <Route path='/profile' element={<UserProfile />} />
+            <Route path='/my-bookings' element={<MyBookings />} />
+            <Route path='/admin' element={<AdminDashboard />} />
           </Routes>
         </Router>
       </div>
