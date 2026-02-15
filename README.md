@@ -120,12 +120,17 @@ npm run lint
    - Fill in your Firebase credentials in the `.env` file (get these from Firebase Console)
    - Enable Google Authentication in Firebase Console
 
-4. **Start development server**
+4. **Understand the APIs** (Optional)
+   - 📖 [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) - Complete API reference with examples
+   - 🗺️ [API_IMPLEMENTATION_MAP.md](./API_IMPLEMENTATION_MAP.md) - Visual map of all API locations
+   - 🚀 [API_QUICK_REFERENCE.md](./API_QUICK_REFERENCE.md) - Quick lookup guide
+
+5. **Start development server**
    ```bash
    npm run dev
    ```
 
-5. **Open browser**
+6. **Open browser**
    Navigate to `http://localhost:5173`
 
 ## 📁 Project Structure
