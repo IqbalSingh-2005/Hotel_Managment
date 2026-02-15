@@ -111,9 +111,13 @@ npm run lint
    npm install
    ```
 
-3. **Set up Firebase** (Important!)
+3. **Set up Firebase** (Required!)
    - Follow the detailed instructions in [FIREBASE_SETUP.md](./FIREBASE_SETUP.md)
-   - Update `src/config/firebase.js` with your Firebase credentials
+   - Create a `.env` file by copying `.env.example`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Fill in your Firebase credentials in the `.env` file (get these from Firebase Console)
    - Enable Google Authentication in Firebase Console
 
 4. **Start development server**
