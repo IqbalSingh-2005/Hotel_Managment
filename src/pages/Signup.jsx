@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Background } from "../components/Background";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User, Phone, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 export const Signup = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -47,10 +49,8 @@ export const Signup = () => {
 
     // Simulate API call
     setTimeout(() => {
-      // Store user data (simulation)
-      localStorage.setItem("authToken", "demo-token-" + Date.now());
-      localStorage.setItem("userEmail", formData.email);
-      localStorage.setItem("userName", formData.fullName);
+      // Use AuthContext login
+      login(formData.email, formData.fullName);
       navigate("/");
       setIsLoading(false);
     }, 1500);
@@ -58,18 +58,18 @@ export const Signup = () => {
 
   return (
     <Background>
-      <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 mt-16 sm:mt-0">
         <div className="w-full max-w-md animate-slideUp">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 cinzel-decorative-regular">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 cinzel-decorative-regular">
               Join Us
             </h1>
-            <p className="text-gray-300 lora-sans">Create your account today</p>
+            <p className="text-sm sm:text-base text-gray-300 lora-sans">Create your account today</p>
           </div>
 
           {/* Signup Form Card */}
-          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
+          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl">
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Full Name */}
               <div className="relative">

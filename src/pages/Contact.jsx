@@ -73,7 +73,7 @@ export const Contact = () => {
             <div className="space-y-6 text-sm">
             {/* Address */}
             <div className="flex items-start space-x-3">
-                <MapPin className="text-white mt-1 w-5 h-5" />
+                <MapPin className="text-white mt-1 w-5 h-5 flex-shrink-0" />
                 <div>
                 <h3 className="text-lg font-semibold">Address</h3>
                 <p className="text-gray-300">XYZ Hotel, Main Street, Delhi 110001</p>
@@ -82,7 +82,7 @@ export const Contact = () => {
 
             {/* Email */}
             <div className="flex items-start space-x-3">
-                <Mail className="text-white mt-1 w-5 h-5" />
+                <Mail className="text-white mt-1 w-5 h-5 flex-shrink-0" />
                 <div>
                 <h3 className="text-lg font-semibold">Email</h3>
                 <p className="text-gray-300">contact@xyzhotel.com</p>
@@ -91,7 +91,7 @@ export const Contact = () => {
 
             {/* Phone */}
             <div className="flex items-start space-x-3">
-                <Phone className="text-white mt-1 w-5 h-5" />
+                <Phone className="text-white mt-1 w-5 h-5 flex-shrink-0" />
                 <div>
                 <h3 className="text-lg font-semibold">Phone</h3>
                 <p className="text-gray-300">+91 98765 43210</p>
@@ -99,7 +99,7 @@ export const Contact = () => {
             </div>
 
             {/* Map Placeholder */}
-            <div className="h-40 md:h-64 w-full rounded-lg overflow-hidden border border-white/10">
+            <div className="h-48 sm:h-56 md:h-64 w-full rounded-lg overflow-hidden border border-white/10">
                 <iframe
                     title="XYZ Hotel Location"
                     width="100%"
