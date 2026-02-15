@@ -19,7 +19,7 @@ export const Contact = () => {
 
   return (
     <Background>
-      <div className="min-h-screen px-6 py-12 pt-32 sm:pt-36 md:pt-40 lg:pt-44 flex flex-col items-center justify-center text-white">
+      <div className="min-h-screen px-6 pb-12 pt-32 sm:pt-36 md:pt-40 lg:pt-44 flex flex-col items-center justify-center text-white">
         {/* Title */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold mb-2 animate-slideUp">Get in Touch</h1>
