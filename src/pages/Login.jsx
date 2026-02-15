@@ -37,7 +37,7 @@ export const Login = () => {
 
   return (
     <Background>
-      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 mt-16 sm:mt-0">
+      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 pb-12 pt-32 sm:pt-36 md:pt-40 lg:pt-44">
         <div className="w-full max-w-md animate-slideUp">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8">

@@ -91,7 +91,7 @@ export const MyBookings = () => {
 
   return (
     <Background>
-      <div className="min-h-screen px-4 md:px-8 py-12 mt-28 md:mt-20">
+      <div className="min-h-screen px-4 md:px-8 pb-12 pt-32 sm:pt-36 md:pt-40 lg:pt-44">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
