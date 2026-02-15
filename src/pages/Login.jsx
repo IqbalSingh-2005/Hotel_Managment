@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Background } from "../components/Background";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -23,9 +25,8 @@ export const Login = () => {
     // Simulate API call
     setTimeout(() => {
       if (formData.email && formData.password) {
-        // Store auth token (simulation)
-        localStorage.setItem("authToken", "demo-token-" + Date.now());
-        localStorage.setItem("userEmail", formData.email);
+        // Use AuthContext login
+        login(formData.email, formData.email.split("@")[0]);
         navigate("/");
       } else {
         setError("Please fill in all fields");

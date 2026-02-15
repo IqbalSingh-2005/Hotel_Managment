@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Background } from "../components/Background";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User, Phone, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 export const Signup = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -47,10 +49,8 @@ export const Signup = () => {
 
     // Simulate API call
     setTimeout(() => {
-      // Store user data (simulation)
-      localStorage.setItem("authToken", "demo-token-" + Date.now());
-      localStorage.setItem("userEmail", formData.email);
-      localStorage.setItem("userName", formData.fullName);
+      // Use AuthContext login
+      login(formData.email, formData.fullName);
       navigate("/");
       setIsLoading(false);
     }, 1500);

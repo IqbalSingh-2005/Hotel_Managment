@@ -6,6 +6,7 @@ import { SplashScreen } from "./components/SplashScreen/SplashScreen.jsx";
 import { Navbar } from "./components/Navbar.jsx";
 import { Chatbot } from "./components/Chatbot.jsx";
 import { NotificationProvider } from "./contexts/NotificationContext.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
 import { Home } from "./pages/Home";
 import { Rooms } from "./pages/Rooms";
 import { Restaurant } from "./pages/Restaurant";
@@ -38,11 +39,12 @@ function App() {
       {!splashDone && <SplashScreen onFinish={() => setSplashDone(true)} />}
 
       <div className={`${!splashDone ? 'pointer-events-none select-none overflow-hidden' : ''}`}>
-        <NotificationProvider>
-          {/* Router wraps everything that needs useLocation */}
-          <Router>
-            {/* ✅ Navbar is now inside Router */}
-            <Navbar dropIn={dropNavbar} />
+        <AuthProvider>
+          <NotificationProvider>
+            {/* Router wraps everything that needs useLocation */}
+            <Router>
+              {/* ✅ Navbar is now inside Router */}
+              <Navbar dropIn={dropNavbar} />
 
             <Routes>
               <Route path='/' element={<Home />} />
@@ -60,10 +62,11 @@ function App() {
               <Route path='/admin' element={<AdminDashboard />} />
             </Routes>
 
-            {/* Chatbot Component - Available on all pages */}
-            {splashDone && <Chatbot />}
-          </Router>
-        </NotificationProvider>
+              {/* Chatbot Component - Available on all pages */}
+              {splashDone && <Chatbot />}
+            </Router>
+          </NotificationProvider>
+        </AuthProvider>
       </div>
     </>
   );
