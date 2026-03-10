@@ -1,17 +1,38 @@
-import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  getDoc,
-  doc, 
-  updateDoc, 
-  deleteDoc, 
-  query, 
-  where,
-  orderBy,
-  serverTimestamp
-} from "firebase/firestore";
-import { db } from "../config/firebase";
+import { sampleRooms } from "./initData";
+
+// ==================== STORAGE KEYS ====================
+
+const ROOMS_KEY = "hotel_rooms";
+const BOOKINGS_KEY = "hotel_bookings";
+const USERS_KEY = "hotel_users";
+const REVIEWS_KEY = "hotel_reviews";
+
+// ==================== HELPERS ====================
+
+const generateId = () => crypto.randomUUID();
+
+const readStore = (key, defaultValue = []) => {
+  try {
+    return JSON.parse(localStorage.getItem(key) || JSON.stringify(defaultValue));
+  } catch {
+    return defaultValue;
+  }
+};
+
+const writeStore = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+/** Ensure rooms are seeded into localStorage on first use */
+const ensureRooms = () => {
+  const rooms = readStore(ROOMS_KEY);
+  if (rooms.length === 0) {
+    const seeded = sampleRooms.map((r) => ({ ...r, id: generateId() }));
+    writeStore(ROOMS_KEY, seeded);
+    return seeded;
+  }
+  return rooms;
+};
 
 // ==================== BOOKINGS ====================
 
@@ -20,15 +41,17 @@ import { db } from "../config/firebase";
  */
 export const createBooking = async (userId, bookingData) => {
   try {
-    const bookingsRef = collection(db, "bookings");
-    const docRef = await addDoc(bookingsRef, {
+    const bookings = readStore(BOOKINGS_KEY);
+    const newBooking = {
       ...bookingData,
+      id: generateId(),
       userId,
       status: "confirmed",
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-    return { success: true, id: docRef.id };
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    writeStore(BOOKINGS_KEY, [...bookings, newBooking]);
+    return { success: true, id: newBooking.id };
   } catch (error) {
     console.error("Error creating booking:", error);
     return { success: false, error: error.message };
@@ -40,18 +63,11 @@ export const createBooking = async (userId, bookingData) => {
  */
 export const getUserBookings = async (userId) => {
   try {
-    const bookingsRef = collection(db, "bookings");
-    const q = query(
-      bookingsRef, 
-      where("userId", "==", userId),
-      orderBy("createdAt", "desc")
-    );
-    const querySnapshot = await getDocs(q);
-    const bookings = [];
-    querySnapshot.forEach((doc) => {
-      bookings.push({ id: doc.id, ...doc.data() });
-    });
-    return { success: true, bookings };
+    const bookings = readStore(BOOKINGS_KEY);
+    const userBookings = bookings
+      .filter((b) => b.userId === userId)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return { success: true, bookings: userBookings };
   } catch (error) {
     console.error("Error getting bookings:", error);
     return { success: false, error: error.message };
@@ -63,13 +79,12 @@ export const getUserBookings = async (userId) => {
  */
 export const getBooking = async (bookingId) => {
   try {
-    const bookingRef = doc(db, "bookings", bookingId);
-    const bookingSnap = await getDoc(bookingRef);
-    if (bookingSnap.exists()) {
-      return { success: true, booking: { id: bookingSnap.id, ...bookingSnap.data() } };
-    } else {
-      return { success: false, error: "Booking not found" };
+    const bookings = readStore(BOOKINGS_KEY);
+    const booking = bookings.find((b) => b.id === bookingId);
+    if (booking) {
+      return { success: true, booking };
     }
+    return { success: false, error: "Booking not found" };
   } catch (error) {
     console.error("Error getting booking:", error);
     return { success: false, error: error.message };
@@ -81,11 +96,13 @@ export const getBooking = async (bookingId) => {
  */
 export const updateBooking = async (bookingId, updates) => {
   try {
-    const bookingRef = doc(db, "bookings", bookingId);
-    await updateDoc(bookingRef, {
-      ...updates,
-      updatedAt: serverTimestamp()
-    });
+    const bookings = readStore(BOOKINGS_KEY);
+    const updated = bookings.map((b) =>
+      b.id === bookingId
+        ? { ...b, ...updates, updatedAt: new Date().toISOString() }
+        : b
+    );
+    writeStore(BOOKINGS_KEY, updated);
     return { success: true };
   } catch (error) {
     console.error("Error updating booking:", error);
@@ -97,17 +114,7 @@ export const updateBooking = async (bookingId, updates) => {
  * Cancel a booking
  */
 export const cancelBooking = async (bookingId) => {
-  try {
-    const bookingRef = doc(db, "bookings", bookingId);
-    await updateDoc(bookingRef, {
-      status: "cancelled",
-      updatedAt: serverTimestamp()
-    });
-    return { success: true };
-  } catch (error) {
-    console.error("Error cancelling booking:", error);
-    return { success: false, error: error.message };
-  }
+  return updateBooking(bookingId, { status: "cancelled" });
 };
 
 /**
@@ -115,7 +122,11 @@ export const cancelBooking = async (bookingId) => {
  */
 export const deleteBooking = async (bookingId) => {
   try {
-    await deleteDoc(doc(db, "bookings", bookingId));
+    const bookings = readStore(BOOKINGS_KEY);
+    writeStore(
+      BOOKINGS_KEY,
+      bookings.filter((b) => b.id !== bookingId)
+    );
     return { success: true };
   } catch (error) {
     console.error("Error deleting booking:", error);
@@ -130,12 +141,7 @@ export const deleteBooking = async (bookingId) => {
  */
 export const getAllRooms = async () => {
   try {
-    const roomsRef = collection(db, "rooms");
-    const querySnapshot = await getDocs(roomsRef);
-    const rooms = [];
-    querySnapshot.forEach((doc) => {
-      rooms.push({ id: doc.id, ...doc.data() });
-    });
+    const rooms = ensureRooms();
     return { success: true, rooms };
   } catch (error) {
     console.error("Error getting rooms:", error);
@@ -145,43 +151,25 @@ export const getAllRooms = async () => {
 
 /**
  * Get available rooms based on filters
- * Note: Firestore has limitations on compound queries, so we fetch all rooms
- * and filter in memory. For production with large datasets, consider:
- * 1. Using Algolia or Elasticsearch for advanced filtering
- * 2. Implementing pagination
- * 3. Creating composite indexes for specific filter combinations
  */
 export const getAvailableRooms = async (filters = {}) => {
   try {
-    const roomsRef = collection(db, "rooms");
-    
-    // Build query with basic filters if applicable
-    let q = roomsRef;
-    
-    // For simple single-field queries, use Firestore where clauses
-    // For complex multi-field queries, fetch and filter in memory
-    
-    const querySnapshot = await getDocs(q);
-    let rooms = [];
-    querySnapshot.forEach((doc) => {
-      rooms.push({ id: doc.id, ...doc.data() });
-    });
+    let rooms = ensureRooms();
 
-    // Apply client-side filters for complex queries
     if (filters.minPrice !== undefined) {
-      rooms = rooms.filter(room => room.price >= filters.minPrice);
+      rooms = rooms.filter((r) => r.price >= filters.minPrice);
     }
     if (filters.maxPrice !== undefined) {
-      rooms = rooms.filter(room => room.price <= filters.maxPrice);
+      rooms = rooms.filter((r) => r.price <= filters.maxPrice);
     }
     if (filters.type) {
-      rooms = rooms.filter(room => room.type === filters.type);
+      rooms = rooms.filter((r) => r.type === filters.type);
     }
     if (filters.guests) {
-      rooms = rooms.filter(room => room.maxGuests >= filters.guests);
+      rooms = rooms.filter((r) => r.maxGuests >= filters.guests);
     }
     if (filters.available !== undefined) {
-      rooms = rooms.filter(room => room.available === filters.available);
+      rooms = rooms.filter((r) => r.available === filters.available);
     }
 
     return { success: true, rooms };
@@ -196,13 +184,12 @@ export const getAvailableRooms = async (filters = {}) => {
  */
 export const getRoom = async (roomId) => {
   try {
-    const roomRef = doc(db, "rooms", roomId);
-    const roomSnap = await getDoc(roomRef);
-    if (roomSnap.exists()) {
-      return { success: true, room: { id: roomSnap.id, ...roomSnap.data() } };
-    } else {
-      return { success: false, error: "Room not found" };
+    const rooms = ensureRooms();
+    const room = rooms.find((r) => r.id === roomId);
+    if (room) {
+      return { success: true, room };
     }
+    return { success: false, error: "Room not found" };
   } catch (error) {
     console.error("Error getting room:", error);
     return { success: false, error: error.message };
@@ -216,11 +203,13 @@ export const getRoom = async (roomId) => {
  */
 export const updateUserProfile = async (userId, profileData) => {
   try {
-    const userRef = doc(db, "users", userId);
-    await updateDoc(userRef, {
-      ...profileData,
-      updatedAt: serverTimestamp()
-    });
+    const users = readStore(USERS_KEY);
+    const updated = users.map((u) =>
+      u.uid === userId
+        ? { ...u, ...profileData, updatedAt: new Date().toISOString() }
+        : u
+    );
+    writeStore(USERS_KEY, updated);
     return { success: true };
   } catch (error) {
     console.error("Error updating profile:", error);
@@ -233,13 +222,13 @@ export const updateUserProfile = async (userId, profileData) => {
  */
 export const getUserProfile = async (userId) => {
   try {
-    const userRef = doc(db, "users", userId);
-    const userSnap = await getDoc(userRef);
-    if (userSnap.exists()) {
-      return { success: true, profile: userSnap.data() };
-    } else {
-      return { success: false, error: "User not found" };
+    const users = readStore(USERS_KEY);
+    const user = users.find((u) => u.uid === userId);
+    if (user) {
+    const { passwordHash: _hash, ...profile } = user;
+      return { success: true, profile };
     }
+    return { success: false, error: "User not found" };
   } catch (error) {
     console.error("Error getting profile:", error);
     return { success: false, error: error.message };
@@ -253,14 +242,16 @@ export const getUserProfile = async (userId) => {
  */
 export const addReview = async (roomId, userId, reviewData) => {
   try {
-    const reviewsRef = collection(db, "reviews");
-    const docRef = await addDoc(reviewsRef, {
+    const reviews = readStore(REVIEWS_KEY);
+    const newReview = {
       ...reviewData,
+      id: generateId(),
       roomId,
       userId,
-      createdAt: serverTimestamp()
-    });
-    return { success: true, id: docRef.id };
+      createdAt: new Date().toISOString(),
+    };
+    writeStore(REVIEWS_KEY, [...reviews, newReview]);
+    return { success: true, id: newReview.id };
   } catch (error) {
     console.error("Error adding review:", error);
     return { success: false, error: error.message };
@@ -272,18 +263,11 @@ export const addReview = async (roomId, userId, reviewData) => {
  */
 export const getRoomReviews = async (roomId) => {
   try {
-    const reviewsRef = collection(db, "reviews");
-    const q = query(
-      reviewsRef, 
-      where("roomId", "==", roomId),
-      orderBy("createdAt", "desc")
-    );
-    const querySnapshot = await getDocs(q);
-    const reviews = [];
-    querySnapshot.forEach((doc) => {
-      reviews.push({ id: doc.id, ...doc.data() });
-    });
-    return { success: true, reviews };
+    const reviews = readStore(REVIEWS_KEY);
+    const roomReviews = reviews
+      .filter((r) => r.roomId === roomId)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return { success: true, reviews: roomReviews };
   } catch (error) {
     console.error("Error getting reviews:", error);
     return { success: false, error: error.message };

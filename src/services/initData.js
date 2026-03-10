@@ -1,17 +1,9 @@
 /**
- * Sample data initialization script
- * This file contains sample data for the hotel management system
- * Run this once to populate your Firebase database with initial data
- * 
- * NOTE: The image paths below reference files in the public/Rooms directory.
- * If these images don't exist, the application will fall back to room-placeholder.svg
+ * Sample data for the hotel management system.
+ * Room data is seeded into localStorage on first use by the data service.
  */
 
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../config/firebase";
-
 // Sample room data
-// NOTE: These images should exist in public/Rooms/ or will fall back to placeholder
 export const sampleRooms = [
   {
     name: "Deluxe Suite",
@@ -86,27 +78,3 @@ export const sampleRooms = [
     size: "600 sq ft"
   }
 ];
-
-/**
- * Initialize database with sample rooms
- * Call this function once to populate the database
- */
-export const initializeRooms = async () => {
-  try {
-    const roomsRef = collection(db, "rooms");
-    
-    for (const room of sampleRooms) {
-      await addDoc(roomsRef, room);
-      console.log(`Added room: ${room.name}`);
-    }
-    
-    console.log("All sample rooms added successfully!");
-    return { success: true };
-  } catch (error) {
-    console.error("Error initializing rooms:", error);
-    return { success: false, error: error.message };
-  }
-};
-
-// Note: You can call initializeRooms() from the browser console to populate the database
-// Example: import { initializeRooms } from './services/initData'; initializeRooms();

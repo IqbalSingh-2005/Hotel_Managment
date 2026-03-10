@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Background } from "../components/Background";
 import { User, Mail, Phone, MapPin, Calendar, Edit2, Save, X } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 export const UserProfile = () => {
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     fullName: "Iqbal Singh",

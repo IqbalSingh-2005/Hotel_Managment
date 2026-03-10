@@ -1,14 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { 
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  updateProfile
-} from "firebase/auth";
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
-import { auth, googleProvider, db } from "../config/firebase";
 
 const AuthContext = createContext();
 
@@ -20,44 +10,72 @@ export const useAuth = () => {
   return context;
 };
 
+const USERS_KEY = "hotel_users";
+const SESSION_KEY = "hotel_session";
+
+const generateId = () => crypto.randomUUID();
+
+/** Hash a password using SHA-256 via the Web Crypto API */
+const hashPassword = async (password) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+};
+
+const getUsers = () => {
+  try {
+    return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+  } catch {
+    return [];
+  }
+};
+
+const saveUsers = (users) => {
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+};
+
+const getSession = () => {
+  try {
+    return JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+  } catch {
+    return null;
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check authentication status with Firebase
+  // Restore session from localStorage on app load
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        // Get additional user data from Firestore
-        const userDocRef = doc(db, "users", firebaseUser.uid);
-        const userDoc = await getDoc(userDocRef);
-        
-        const userData = userDoc.exists() ? userDoc.data() : {};
-        
-        setIsAuthenticated(true);
-        setUser({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          name: firebaseUser.displayName || userData.name || firebaseUser.email?.split("@")[0],
-          photoURL: firebaseUser.photoURL || userData.photoURL,
-          phone: userData.phone || "",
-        });
-      } else {
-        setIsAuthenticated(false);
-        setUser(null);
-      }
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
+    const session = getSession();
+    if (session) {
+      setIsAuthenticated(true);
+      setUser(session);
+    }
+    setLoading(false);
   }, []);
 
   // Email/Password Login
   const login = async (email, password) => {
     try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      return { success: true, user: result.user };
+      const passwordHash = await hashPassword(password);
+      const users = getUsers();
+      const found = users.find(
+        (u) => u.email === email && u.passwordHash === passwordHash
+      );
+      if (!found) {
+        return { success: false, error: "Invalid email or password." };
+      }
+      const { passwordHash: _hash, ...userData } = found;
+      setIsAuthenticated(true);
+      setUser(userData);
+      localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
+      return { success: true, user: userData };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -66,49 +84,29 @@ export const AuthProvider = ({ children }) => {
   // Email/Password Signup
   const signup = async (email, password, name, phone) => {
     try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      
-      // Update user profile
-      await updateProfile(result.user, {
-        displayName: name
-      });
-
-      // Save additional user data to Firestore
-      await setDoc(doc(db, "users", result.user.uid), {
-        name,
-        email,
-        phone,
-        createdAt: serverTimestamp(),
-        photoURL: null
-      });
-
-      return { success: true, user: result.user };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  };
-
-  // Google Sign In
-  const signInWithGoogle = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-
-      // Check if user document exists, if not create it
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
-
-      if (!userDoc.exists()) {
-        await setDoc(userDocRef, {
-          name: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          createdAt: serverTimestamp(),
-          phone: ""
-        });
+      const users = getUsers();
+      if (users.find((u) => u.email === email)) {
+        return {
+          success: false,
+          error: "An account with this email already exists.",
+        };
       }
-
-      return { success: true, user };
+      const passwordHash = await hashPassword(password);
+      const newUser = {
+        uid: generateId(),
+        email,
+        passwordHash,
+        name,
+        phone,
+        photoURL: null,
+        createdAt: new Date().toISOString(),
+      };
+      saveUsers([...users, newUser]);
+      const { passwordHash: _hash, ...userData } = newUser;
+      setIsAuthenticated(true);
+      setUser(userData);
+      localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
+      return { success: true, user: userData };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -117,9 +115,9 @@ export const AuthProvider = ({ children }) => {
   // Logout
   const logout = async () => {
     try {
-      await signOut(auth);
       setIsAuthenticated(false);
       setUser(null);
+      localStorage.removeItem(SESSION_KEY);
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
@@ -132,7 +130,6 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     signup,
-    signInWithGoogle,
     logout,
   };
 
