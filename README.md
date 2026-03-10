@@ -1,17 +1,15 @@
 # Hotel Management System
 
-A premium, full-featured hotel management system built with React and Firebase, featuring advanced booking capabilities, user dashboards, admin analytics, Google OAuth authentication, and AI-powered customer support.
+A premium, full-featured hotel management system built with React, featuring advanced booking capabilities, user dashboards, admin analytics, and AI-powered customer support.
 
 ## 🌟 Features
 
 ### Customer-Facing Features
 - **Authentication System**
-  - ✅ Login with email/password (Firebase Auth)
-  - ✅ User registration with validation
+  - ✅ Sign up with email, name, and phone
+  - ✅ Login with email and password
   - ✅ Password reset flow
-  - ✅ **Google OAuth Sign-In** (Fully Integrated)
-  - ✅ Session persistence
-  - ✅ Firebase Authentication integration
+  - ✅ Session persistence (localStorage)
 
 - **Advanced Room Search & Booking**
   - Multi-criteria filtering (price, rating, amenities, guests)
@@ -70,9 +68,7 @@ A premium, full-featured hotel management system built with React and Firebase, 
 
 - **Framework**: React 19.1.0
 - **Build Tool**: Vite 6.3.5
-- **Backend**: Firebase (Authentication + Firestore)
-- **Authentication**: Firebase Auth with Google OAuth 2.0
-- **Database**: Cloud Firestore
+- **Storage**: localStorage (no external backend required)
 - **Routing**: React Router DOM 7.6.3
 - **Styling**: Tailwind CSS 3.4.17
 - **Icons**: Lucide React 0.525.0
@@ -111,22 +107,15 @@ npm run lint
    npm install
    ```
 
-3. **Set up Firebase** (Required!)
-   - Follow the detailed instructions in [FIREBASE_SETUP.md](./FIREBASE_SETUP.md)
-   - Create a `.env` file by copying `.env.example`:
-     ```bash
-     cp .env.example .env
-     ```
-   - Fill in your Firebase credentials in the `.env` file (get these from Firebase Console)
-   - Enable Google Authentication in Firebase Console
-
-4. **Start development server**
+3. **Start development server**
    ```bash
    npm run dev
    ```
 
-5. **Open browser**
+4. **Open browser**
    Navigate to `http://localhost:5173`
+
+> **No external credentials required.** Authentication and data are stored in the browser's localStorage.
 
 ## 📁 Project Structure
 
@@ -139,14 +128,12 @@ src/
 │   ├── Chatbot.jsx
 │   ├── LoadingSkeletons.jsx
 │   └── ...
-├── config/             # Configuration files
-│   └── firebase.js     # Firebase configuration
 ├── contexts/           # React Context providers
-│   ├── AuthContext.jsx # Authentication state management
+│   ├── AuthContext.jsx # Authentication state (localStorage-based)
 │   └── NotificationContext.jsx
-├── services/           # API and database services
-│   ├── firebase.service.js  # Firestore CRUD operations
-│   └── initData.js     # Sample data initialization
+├── services/           # Data services
+│   ├── firebase.service.js  # CRUD operations (localStorage-based)
+│   └── initData.js     # Sample room data
 ├── pages/              # Page components
 │   ├── Home.jsx
 │   ├── Login.jsx
@@ -199,66 +186,42 @@ src/
 12. **/events** - Events and conferences
 13. **/contact** - Contact form
 
-## 🔧 Configuration
+## 🗄️ Data Storage
 
-### Firebase Configuration
-See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for detailed Firebase setup instructions including:
-- Creating a Firebase project
-- Enabling authentication methods
-- Setting up Firestore database
-- Configuring security rules
-- Google OAuth setup
+All data is persisted in the browser's **localStorage** under the following keys:
 
-### Tailwind Configuration
-Custom animations and utilities in `tailwind.config.js`:
-- Text gradient animation
-- Slide-up animation
-- Blob animations
-- Custom font families
-
-### Vite Configuration
-Optimized build settings in `vite.config.js`:
-- React plugin
-- Fast refresh
-- Build optimization
-
-## 🗄️ Database
-
-### Firebase Firestore Collections
-
-- **users**: User profiles and settings
-- **bookings**: Hotel room reservations
-- **rooms**: Available rooms with details
-- **reviews**: User reviews for rooms
-
-See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for complete database schema.
+| Key | Contents |
+|-----|----------|
+| `hotel_users` | Registered user accounts |
+| `hotel_session` | Current logged-in session |
+| `hotel_rooms` | Room catalogue (auto-seeded on first load) |
+| `hotel_bookings` | Booking records |
+| `hotel_reviews` | Room reviews |
 
 ## 🔐 Security
 
-- ✅ Firebase Authentication with email/password and Google OAuth
-- ✅ Firestore security rules for data protection
+- ✅ Email/password authentication (localStorage-based)
 - ✅ Input validation on all forms
 - ✅ XSS prevention through React's built-in escaping
 - ✅ No inline scripts
-- ✅ Secure authentication flow
 - ✅ 0 security vulnerabilities (CodeQL scan)
 
 ## 🎯 Implemented Features
 
-### Authentication & Backend
-- ✅ Firebase Authentication (Email/Password)
-- ✅ Google OAuth 2.0 Sign-In
-- ✅ Cloud Firestore database
-- ✅ User profile management
-- ✅ Session persistence
-- ✅ Secure data storage
+- ✅ Email/password authentication with session persistence
+- ✅ User registration and profile management
+- ✅ Room search, filtering, and booking
+- ✅ Admin analytics dashboard
+- ✅ Booking management (view, cancel)
+- ✅ AI chatbot support
+- ✅ Toast notification system
+- ✅ Responsive glass-morphism UI
 
 ### Future Enhancements
 
 #### Advanced Features
+- Backend/database integration (e.g., Supabase, PocketBase)
 - Payment gateway integration (Stripe/PayPal)
-- Machine learning price prediction
-- Collaborative filtering recommendations
 - Email notifications
 - SMS alerts
 - Calendar synchronization
@@ -267,16 +230,15 @@ See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for complete database schema.
 #### Admin Features
 - Hotel management (add/edit)
 - Room management interface
-- User management
 - Detailed analytics
 - Report generation (CSV/PDF)
 
 ## 📊 Performance
 
-- **Bundle Size**: 323KB JS (93KB gzipped)
-- **CSS Size**: 36KB (6.6KB gzipped)
+- **Bundle Size**: ~328KB JS (~94KB gzipped)
+- **CSS Size**: ~38KB (~7KB gzipped)
 - **Build Time**: ~3 seconds
-- **Lighthouse Score**: Optimized for performance
+- **No external API calls** at runtime
 
 ## 🤝 Contributing
 
